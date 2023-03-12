@@ -14,7 +14,7 @@ public class BudgetController
 {
 	private final BudgetService service;
 
-	@GetMapping("current-month")
+	@GetMapping("current")
 	public ResponseEntity<BasicBudgetDTO> getCurrentMonthBudget()
 	{
 		return ResponseEntity.ok(service.buildCurrentMonthBudget());

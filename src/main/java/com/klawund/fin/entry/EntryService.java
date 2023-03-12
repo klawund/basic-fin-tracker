@@ -62,13 +62,8 @@ public class EntryService
 		repository.delete(repository.getReferenceById(id));
 	}
 
-	public Set<BudgetEntryDTO> findEntrisForCurrentMonth()
+	public Set<BudgetEntryDTO> findEntriesForPeriod(LocalDate start, LocalDate end)
 	{
-		final LocalDate now = LocalDate.now();
-
-		final LocalDate startOfMonth = now.with(firstDayOfMonth());
-		final LocalDate endOfMonth = now.with(lastDayOfMonth());
-
-		return repository.findEntriesForPeriod(startOfMonth, endOfMonth);
+		return repository.findEntriesForPeriod(start, end);
 	}
 }

@@ -24,7 +24,7 @@ public class BudgetService
 		final LocalDate start = now.with(firstDayOfMonth());
 		final LocalDate end = now.with(lastDayOfMonth());
 
-		final Set<BudgetEntryDTO> entries = entryService.findEntrisForCurrentMonth();
+		final Set<BudgetEntryDTO> entries = entryService.findEntriesForPeriod(start, end);
 		final BigDecimal sum = sumEntries(entries);
 
 		return BasicBudgetDTO.builder()
