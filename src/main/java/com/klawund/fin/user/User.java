@@ -15,7 +15,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@SequenceGenerator(name = "UserIdSeq", sequenceName = "USER_ID_SEQ", allocationSize = 1)
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,7 +26,7 @@ public class User implements UserDetails, Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserIdSeq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String firstName;
 	private String lastName;
