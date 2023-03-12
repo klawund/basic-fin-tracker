@@ -1,12 +1,8 @@
-package com.klawund.fin.entry;
+package com.klawund.fin.category;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.klawund.fin.category.Category;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +14,7 @@ import org.hibernate.annotations.TenantId;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Entry implements Serializable
+public class Category implements Serializable
 {
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -27,28 +23,15 @@ public class Entry implements Serializable
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String title;
-
-	@Column(nullable = false)
-	private LocalDate due;
-
-	@Column(nullable = false)
-	private BigDecimal ammount;
-
-	@ManyToOne
-	private Category category;
+	@Column(unique = true, nullable = false)
+	private String name;
 
 	@TenantId
-	@JsonIgnore
 	private String tenantId;
 
 	@PrePersist
 	private void prePersist()
 	{
-		if (due == null)
-		{
-			due = LocalDate.now();
-		}
+		name = name.trim();
 	}
 }

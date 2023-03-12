@@ -2,12 +2,17 @@ package com.klawund.fin.entry;
 
 import static java.time.temporal.TemporalAdjusters.*;
 
+import com.klawund.fin.category.Category;
+import com.klawund.fin.category.CategoryRepository;
+import com.klawund.fin.category.CategoryService;
+import com.klawund.fin.category.dto.CreateCategoryDTO;
 import com.klawund.fin.entry.dto.BudgetEntryDTO;
 import com.klawund.fin.entry.dto.CreateEntryDTO;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,16 +23,43 @@ import org.springframework.transaction.annotation.Transactional;
 public class EntryService
 {
 	private final EntryRepository repository;
+	private final CategoryRepository categoryRepository;
+	private final CategoryService categoryService;
 
 	public Entry create(CreateEntryDTO createEntryDTO)
 	{
-		final Entry entry = Entry.builder()
+		final Entry.EntryBuilder entryBuilder = Entry.builder()
 			.title(createEntryDTO.getTitle())
 			.due(createEntryDTO.getDue())
-			.ammount(createEntryDTO.getAmmount())
+			.ammount(createEntryDTO.getAmmount());
+
+		final Category category = getCategoryFromCreateEntryDTO(createEntryDTO);
+		if (category != null)
+		{
+			entryBuilder.category(category);
+		}
+
+		return repository.save(entryBuilder.build());
+	}
+
+	private Category getCategoryFromCreateEntryDTO(CreateEntryDTO createEntryDTO)
+	{
+		final String categoryName = createEntryDTO.getCategoryName();
+		if (categoryName == null || categoryName.isBlank())
+		{
+			return null;
+		}
+
+		Optional<Category> existingCategoryOptional = categoryRepository.findCategoryByName(categoryName);
+		if (existingCategoryOptional.isPresent())
+		{
+			return existingCategoryOptional.get();
+		}
+		CreateCategoryDTO createCategoryDTO = CreateCategoryDTO.builder()
+			.name(categoryName)
 			.build();
 
-		return repository.save(entry);
+		return categoryService.create(createCategoryDTO);
 	}
 
 	@Transactional
@@ -60,10 +92,5 @@ public class EntryService
 	public void delete(Long id)
 	{
 		repository.delete(repository.getReferenceById(id));
-	}
-
-	public Set<BudgetEntryDTO> findEntriesForPeriod(LocalDate start, LocalDate end)
-	{
-		return repository.findEntriesForPeriod(start, end);
 	}
 }

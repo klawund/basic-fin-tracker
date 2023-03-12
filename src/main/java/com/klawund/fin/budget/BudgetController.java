@@ -1,6 +1,7 @@
 package com.klawund.fin.budget;
 
 import com.klawund.fin.budget.dto.BasicBudgetDTO;
+import com.klawund.fin.budget.dto.BudgetGroupedByCategoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,5 +19,11 @@ public class BudgetController
 	public ResponseEntity<BasicBudgetDTO> getCurrentMonthBudget()
 	{
 		return ResponseEntity.ok(service.buildCurrentMonthBudget());
+	}
+
+	@GetMapping("current/grouped-by-category")
+	public ResponseEntity<BudgetGroupedByCategoryDTO> getCurrentMonthBudgetGroupedByCategory()
+	{
+		return ResponseEntity.ok(service.buildCurrentMonthBudgetGroupedByCategory());
 	}
 }

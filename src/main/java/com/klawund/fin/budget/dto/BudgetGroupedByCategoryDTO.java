@@ -1,28 +1,28 @@
 package com.klawund.fin.budget.dto;
 
-import com.klawund.fin.entry.dto.BudgetEntryDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.klawund.fin.entry.dto.GroupedBudgetEntriesDTO;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasicBudgetDTO implements BaseBudgetDTO<Set<BudgetEntryDTO>>, Serializable
+public class BudgetGroupedByCategoryDTO implements BaseBudgetDTO<Set<GroupedBudgetEntriesDTO>>, Serializable
 {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private Set<BudgetEntryDTO> entries = new HashSet<>();
+
+	@JsonProperty("groupedEntries")
+	private Set<GroupedBudgetEntriesDTO> entries;
 	private BigDecimal sum;
 }
