@@ -2,6 +2,7 @@ package com.klawund.fin.user;
 
 import com.klawund.fin.role.Role;
 import jakarta.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "tb_user")
 public class User implements UserDetails, Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,6 +31,7 @@ public class User implements UserDetails, Serializable
 	private Long id;
 	private String firstName;
 	private String lastName;
+	private String username;
 	private String email;
 	private String password;
 
@@ -44,7 +47,7 @@ public class User implements UserDetails, Serializable
 	@Override
 	public String getUsername()
 	{
-		return email;
+		return username;
 	}
 
 	@Override

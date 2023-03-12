@@ -1,6 +1,8 @@
 package com.klawund.fin.entry;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.TenantId;
 
 @Entity
 @SequenceGenerator(name = "EntryIdSeq", sequenceName = "ENTRY_ID_SEQ", allocationSize = 1)
@@ -17,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Entry implements Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,6 +35,10 @@ public class Entry implements Serializable
 
 	@Column(nullable = false)
 	private BigDecimal ammount;
+
+	@TenantId
+	@JsonIgnore
+	private String tenantId;
 
 	@PrePersist
 	private void prePersist()

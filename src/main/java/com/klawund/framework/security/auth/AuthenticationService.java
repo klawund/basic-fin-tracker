@@ -28,6 +28,7 @@ public class AuthenticationService
 			.firstName(request.getFirstName())
 			.lastName(request.getLastName())
 			.email(request.getEmail())
+			.username(request.getUsername())
 			.password(passwordEncoder.encode(request.getPassword()))
 			.role(Role.USER)
 			.build();
@@ -44,11 +45,11 @@ public class AuthenticationService
 	{
 		authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(
-				request.getEmail(),
+				request.getUsername(),
 				request.getPassword())
 		);
 
-		var user = userService.loadUserByUsername(request.getEmail());
+		var user = userService.loadUserByUsername(request.getUsername());
 
 		var jwt = jwtService.generateToken(user);
 		return TokenDTO.builder()

@@ -1,5 +1,8 @@
 package com.klawund.framework.security.jwt;
 
+import com.klawund.fin.user.User;
+import com.klawund.fin.user.UserService;
+import com.klawund.framework.security.CurrentUserDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +13,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,7 +22,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationFilter extends OncePerRequestFilter
 {
 	private final JwtService jwtService;
-	private final UserDetailsService userDetailsService;
+	private final UserService userService;
+	private final CurrentUserDTO currentUserDTO;
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -40,7 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null)
 		{
-			final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+			final User userDetails = (User) userService.loadUserByUsername(username);
+			setCurrentUser(userDetails);
+
 			if (jwtService.isTokenValid(jwt, userDetails))
 			{
 				final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -51,6 +56,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 			}
 		}
 		filterChain.doFilter(request, response);
+	}
+
+	void setCurrentUser(User user)
+	{
+		currentUserDTO.setId(user.getId());
+		currentUserDTO.setUsername(user.getUsername());
+		currentUserDTO.setFirstName(user.getFirstName());
+		currentUserDTO.setLastName(user.getLastName());
+		currentUserDTO.setEmail(user.getEmail());
 	}
 
 	static class Constants
