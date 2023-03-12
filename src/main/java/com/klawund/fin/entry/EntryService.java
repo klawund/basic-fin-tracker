@@ -1,10 +1,14 @@
 package com.klawund.fin.entry;
 
+import static java.time.temporal.TemporalAdjusters.*;
+
+import com.klawund.fin.entry.dto.BudgetEntryDTO;
 import com.klawund.fin.entry.dto.CreateEntryDTO;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,5 +60,15 @@ public class EntryService
 	public void delete(Long id)
 	{
 		repository.delete(repository.getReferenceById(id));
+	}
+
+	public Set<BudgetEntryDTO> findEntrisForCurrentMonth()
+	{
+		final LocalDate now = LocalDate.now();
+
+		final LocalDate startOfMonth = now.with(firstDayOfMonth());
+		final LocalDate endOfMonth = now.with(lastDayOfMonth());
+
+		return repository.findEntriesForPeriod(startOfMonth, endOfMonth);
 	}
 }
