@@ -1,6 +1,7 @@
 package com.klawund.fin.summary;
 
 import com.klawund.fin.summary.dto.BasicSummaryDTO;
+import com.klawund.fin.summary.dto.SummaryGroupedByCategoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,5 +19,11 @@ public class SummaryController
 	public ResponseEntity<BasicSummaryDTO> getCurrentMonthSummeary()
 	{
 		return ResponseEntity.ok(service.buildCurrentMonthSummary());
+	}
+
+	@GetMapping("current/grouped-by-category")
+	public ResponseEntity<SummaryGroupedByCategoryDTO> getCurrentMonthSummaryGroupedByCategory()
+	{
+		return ResponseEntity.ok(service.buildCurrentMonthSummaryGroupedByCategory());
 	}
 }

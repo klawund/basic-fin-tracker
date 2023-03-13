@@ -1,0 +1,23 @@
+package com.klawund.fin.summary.dto;
+
+import com.klawund.fin.category.dto.CategoryAggregateSumDTO;
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Set;
+import lombok.*;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SummaryGroupedByCategoryDTO implements Serializable
+{
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private Set<CategoryAggregateSumDTO> categorySummaries;
+}
