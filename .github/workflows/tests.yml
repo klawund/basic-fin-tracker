@@ -1,0 +1,28 @@
+name: tests
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - main
+
+jobs:
+  run-unit-tests:
+    runs-on: self-hosted
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup jdk
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribuition: 'adopt'
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@4.4
+        with:
+          maven-version: 3.8.2
+
+      - name: run tests
+        run: mvn clean install
