@@ -1,19 +1,15 @@
 package com.klawund.fin.entry;
 
-import static java.time.temporal.TemporalAdjusters.*;
-
 import com.klawund.fin.category.Category;
 import com.klawund.fin.category.CategoryRepository;
 import com.klawund.fin.category.CategoryService;
 import com.klawund.fin.category.dto.CreateCategoryDTO;
-import com.klawund.fin.entry.dto.BudgetEntryDTO;
 import com.klawund.fin.entry.dto.CreateEntryDTO;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +59,7 @@ public class EntryService
 	}
 
 	@Transactional
+	// FIXME does not support category change yet
 	public Entry update(Entry newEntity)
 	{
 		final Entry existingEntity = repository.findById(newEntity.getId())
