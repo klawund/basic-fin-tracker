@@ -24,5 +24,12 @@ jobs:
         with:
           maven-version: 3.8.2
 
+      - name: cache maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
       - name: run tests
-        run: mvn clean install
+        run: mvn -B test
