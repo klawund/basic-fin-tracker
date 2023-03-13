@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService
 {
+	public static final String SUPER_USER_USERNAME = "super";
+
 	private final UserRepository repository;
 
 	@Override
@@ -17,10 +19,5 @@ public class UserService implements UserDetailsService
 	{
 		return repository.findByUsername(username)
 			.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-	}
-
-	public User save(User user)
-	{
-		return repository.save(user);
 	}
 }

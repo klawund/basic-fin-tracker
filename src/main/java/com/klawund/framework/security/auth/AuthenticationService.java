@@ -1,6 +1,7 @@
 package com.klawund.framework.security.auth;
 
 import com.klawund.fin.role.Role;
+import com.klawund.fin.user.UserRepository;
 import com.klawund.fin.user.UserService;
 import com.klawund.fin.user.User;
 import com.klawund.framework.security.auth.dto.AuthenticationRequestDTO;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService
 {
 	private final UserService userService;
+	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtService jwtService;
 	private final AuthenticationManager authenticationManager;
@@ -33,7 +35,7 @@ public class AuthenticationService
 			.role(Role.USER)
 			.build();
 
-		userService.save(user);
+		userRepository.save(user);
 
 		var jwt = jwtService.generateToken(user);
 		return TokenDTO.builder()
@@ -55,5 +57,10 @@ public class AuthenticationService
 		return TokenDTO.builder()
 			.token(jwt)
 			.build();
+	}
+
+	public String getEncodedPassword(String password)
+	{
+		return passwordEncoder.encode(password);
 	}
 }
