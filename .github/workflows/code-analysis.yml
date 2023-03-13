@@ -2,7 +2,7 @@ name: code-analysis
 on: push
 jobs:
   code-analysis:
-    name: Build and analyze
+    name: code-analysis
     runs-on: ubuntu-latest
     steps:
       - name: checkout
