@@ -1,5 +1,6 @@
-package com.klawund.framework.security.filter;
+package com.klawund.framework.filter.config;
 
+import com.klawund.framework.logging.filter.CurrentRequestURILogFilter;
 import com.klawund.framework.multitenancy.filter.CurrentTenantExtractorFilter;
 import com.klawund.framework.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class FilterConfig
 	private final AuthenticationProvider authenticationProvider;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final CurrentTenantExtractorFilter currentTenantExtractorFilter;
+	private final CurrentRequestURILogFilter currentRequestURILogFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
@@ -32,6 +34,7 @@ public class FilterConfig
 			.authenticationProvider(authenticationProvider)
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterAfter(currentTenantExtractorFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterAfter(currentRequestURILogFilter, CurrentTenantExtractorFilter.class)
 		.build();
 	}
 }

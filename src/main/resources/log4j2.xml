@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
-        <Property name="console.layout.pattern">%d{yyyy-MM-dd-HH:mm:ss.SSS} %5p [%t] %C:%L - %m%n</Property>
+        <Property name="console.layout.pattern">%d{yyyy-MM-dd-HH:mm:ss.SSS} %5p [%t] %X{current.user} %C:%L - %m%n</Property>
         <Property name="file.layout.pattern">${console.layout.pattern}</Property>
         <Property name="fin.log.directory">${sys:catalina.base:-.}/logs</Property>
         <Property name="fin.log.archive.directory">${fin.log.directory}/archive</Property>
         <Property name="fin.log.file.name">latest.log</Property>
     </Properties>
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
+        <Console name="Console"
+                 target="SYSTEM_OUT">
             <PatternLayout pattern="${console.layout.pattern}"/>
         </Console>
 
@@ -23,6 +24,12 @@
                 <TimeBasedTriggeringPolicy />
             </Policies>
         </RollingFile>
+
+        <Rewrite name="CurrentUserRewritePolicy">
+            <CurrentUserRewritePolicy/>
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="File" />
+        </Rewrite>
     </Appenders>
 
     <Loggers>
@@ -30,5 +37,11 @@
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />
         </Root>
+
+        <Logger name="com.klawund.framework.logging.filter.CurrentRequestURILogFilter"
+                level="TRACE"
+                additivity="false">
+            <AppenderRef ref="CurrentUserRewritePolicy" />
+        </Logger>
     </Loggers>
 </Configuration>
