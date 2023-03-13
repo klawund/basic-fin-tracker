@@ -3,6 +3,7 @@ package com.klawund.fin.summary.dto;
 import com.klawund.fin.category.dto.CategoryAggregateSumDTO;
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.*;
@@ -20,4 +21,5 @@ public class SummaryGroupedByCategoryDTO implements Serializable
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private Set<CategoryAggregateSumDTO> categorySummaries;
+	private BigDecimal sum;
 }

@@ -43,6 +43,7 @@ public class SummaryService
 			.startDate(start)
 			.endDate(end)
 			.categorySummaries(categoryAggregateSums)
+			.sum(entryRepository.sumEntriesAmmountForPeriod(start, end))
 			.build();
 	}
 }
