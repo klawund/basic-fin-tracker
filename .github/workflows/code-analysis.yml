@@ -1,13 +1,5 @@
 name: code-analysis
-on:
-  push:
-    branches:
-      - master
-    pull_request:
-      types:
-        - opened
-        - synchronize
-        - reopened
+on: push
 jobs:
   code-analysis:
     name: Build and analyze
