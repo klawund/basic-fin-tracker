@@ -1,5 +1,6 @@
 package com.klawund.fin.category;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -27,6 +28,7 @@ public class Category implements Serializable
 	private String name;
 
 	@TenantId
+	@JsonIgnore
 	private String tenantId;
 
 	@PrePersist

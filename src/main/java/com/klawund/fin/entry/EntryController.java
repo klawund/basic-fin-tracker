@@ -1,6 +1,7 @@
 package com.klawund.fin.entry;
 
 import com.klawund.fin.entry.dto.CreateEntryDTO;
+import com.klawund.fin.entry.dto.UpdateEntryDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,9 @@ public class EntryController
 	}
 	
 	@PutMapping
-	public ResponseEntity<Entry> update(@RequestBody Entry newEntity)
+	public ResponseEntity<Entry> update(@RequestBody UpdateEntryDTO updateEntryDTO)
 	{
-		return ResponseEntity.ok(service.update(newEntity));
+		return ResponseEntity.ok(service.update(updateEntryDTO));
 	}
 
 	@DeleteMapping
