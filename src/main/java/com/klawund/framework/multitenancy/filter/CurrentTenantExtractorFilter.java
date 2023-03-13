@@ -19,6 +19,16 @@ public class CurrentTenantExtractorFilter extends OncePerRequestFilter
 	private final CurrentUserDTO currentUserDTO;
 
 	@Override
+	protected boolean shouldNotFilter(@NonNull HttpServletRequest req) throws ServletException
+	{
+		if (req.getRequestURI().startsWith("/auth"))
+		{
+			return true;
+		}
+		return super.shouldNotFilter(req);
+	}
+
+	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res,
 		@NonNull FilterChain chain) throws ServletException, IOException
 	{
