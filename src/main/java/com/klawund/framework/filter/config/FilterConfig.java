@@ -1,5 +1,6 @@
 package com.klawund.framework.filter.config;
 
+import com.klawund.fin.role.Role;
 import com.klawund.framework.logging.filter.CurrentRequestURILogFilter;
 import com.klawund.framework.multitenancy.filter.CurrentTenantExtractorFilter;
 import com.klawund.framework.security.jwt.JwtAuthenticationFilter;
@@ -26,11 +27,12 @@ public class FilterConfig
 	{
 		return http
 			.csrf().disable()
-			.authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
+			.authorizeHttpRequests(authorize -> {
+				authorize.requestMatchers("/auth/**").permitAll();
+				authorize.requestMatchers("/users/**").hasAuthority(Role.ADMIN.name());
+				authorize.anyRequest().authenticated();
+			})
+			.sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authenticationProvider(authenticationProvider)
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterAfter(currentTenantExtractorFilter, UsernamePasswordAuthenticationFilter.class)

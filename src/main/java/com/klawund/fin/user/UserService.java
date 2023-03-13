@@ -1,5 +1,7 @@
 package com.klawund.fin.user;
 
+import com.klawund.fin.user.dto.UserDTO;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,5 +21,11 @@ public class UserService implements UserDetailsService
 	{
 		return repository.findByUsername(username)
 			.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+	}
+
+	public List<UserDTO> findAll()
+	{
+		List<User> allUsers = repository.findAll();
+		return allUsers.stream().map(UserDTO::new).toList();
 	}
 }

@@ -72,4 +72,10 @@ public class User implements UserDetails, Serializable
 	{
 		return true;
 	}
+
+	@PrePersist
+	private void prePersist()
+	{
+		this.role = Role.USER;
+	}
 }
