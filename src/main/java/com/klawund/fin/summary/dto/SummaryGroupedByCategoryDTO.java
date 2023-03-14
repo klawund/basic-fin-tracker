@@ -5,7 +5,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import lombok.*;
 
 @Getter
@@ -20,6 +20,6 @@ public class SummaryGroupedByCategoryDTO implements Serializable
 
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private Set<CategoryAggregateSumDTO> categorySummaries;
 	private BigDecimal sum;
+	private List<CategoryAggregateSumDTO> categorySummaries;
 }

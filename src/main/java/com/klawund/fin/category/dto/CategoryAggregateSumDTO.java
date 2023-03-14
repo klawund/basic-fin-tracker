@@ -23,6 +23,10 @@ public class CategoryAggregateSumDTO implements Serializable
 		{
 			this.categoryName = category.getName();
 		}
+		else
+		{
+			this.categoryName = "none";
+		}
 		this.sum = sum;
 	}
 

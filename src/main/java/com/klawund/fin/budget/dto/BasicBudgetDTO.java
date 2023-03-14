@@ -5,8 +5,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasicBudgetDTO implements BaseBudgetDTO<Set<BudgetEntryDTO>>, Serializable
+public class BasicBudgetDTO implements BaseBudgetDTO<List<BudgetEntryDTO>>, Serializable
 {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private Set<BudgetEntryDTO> entries = new HashSet<>();
 	private BigDecimal sum;
+	private List<BudgetEntryDTO> entries = new ArrayList<>();
 }

@@ -1,14 +1,15 @@
 package com.klawund.fin.summary;
 
-import static java.time.temporal.TemporalAdjusters.*;
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 import com.klawund.fin.category.CategoryRepository;
 import com.klawund.fin.category.dto.CategoryAggregateSumDTO;
-import com.klawund.fin.entry.EntryRepository;
+import com.klawund.fin.entry.EntryService;
 import com.klawund.fin.summary.dto.BasicSummaryDTO;
 import com.klawund.fin.summary.dto.SummaryGroupedByCategoryDTO;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SummaryService
 {
-	private final EntryRepository entryRepository;
+	private final EntryService entryService;
 	private final CategoryRepository categoryRepository;
 
 	public BasicSummaryDTO buildCurrentMonthSummary()
@@ -28,7 +29,7 @@ public class SummaryService
 		return BasicSummaryDTO.builder()
 			.startDate(start)
 			.endDate(end)
-			.sum(entryRepository.sumEntriesAmmountForPeriod(start, end))
+			.sum(entryService.sumEntriesAmmountForPeriod(start, end))
 			.build();
 	}
 
@@ -38,12 +39,12 @@ public class SummaryService
 		final LocalDate start = now.with(firstDayOfMonth());
 		final LocalDate end = now.with(lastDayOfMonth());
 
-		Set<CategoryAggregateSumDTO> categoryAggregateSums = categoryRepository.findCategoryAggreagateSumsForPeriod(start, end);
+		List<CategoryAggregateSumDTO> categoryAggregateSums = categoryRepository.findCategoryAggreagateSumsForPeriod(start, end);
 		return SummaryGroupedByCategoryDTO.builder()
 			.startDate(start)
 			.endDate(end)
 			.categorySummaries(categoryAggregateSums)
-			.sum(entryRepository.sumEntriesAmmountForPeriod(start, end))
+			.sum(entryService.sumEntriesAmmountForPeriod(start, end))
 			.build();
 	}
 }

@@ -2,11 +2,13 @@ package com.klawund.fin.entry;
 
 import com.klawund.fin.category.Category;
 import com.klawund.fin.category.CategoryService;
+import com.klawund.fin.entry.dto.BudgetEntryDTO;
 import com.klawund.fin.entry.dto.CreateEntryDTO;
 import com.klawund.fin.entry.dto.UpdateEntryDTO;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -90,5 +92,25 @@ public class EntryService
 	public void delete(Long id)
 	{
 		repository.delete(repository.getReferenceById(id));
+	}
+
+	public BigDecimal sumEntriesAmmountForPeriod(LocalDate start, LocalDate end)
+	{
+		return repository.sumEntriesAmmountForPeriod(start, end).orElse(BigDecimal.ZERO);
+	}
+
+	public BigDecimal sumEntriesAmmountForPeriodAndCategory(LocalDate start, LocalDate end, String categoryName)
+	{
+		if (categoryName == null || categoryName.isBlank())
+		{
+			return repository.sumEntriesAmmountWithoutCategoryForPeriod(start, end).orElse(BigDecimal.ZERO);
+		}
+		return repository.sumEntriesAmmountForPeriodAndCategory(start, end, categoryName).orElse(BigDecimal.ZERO);
+	}
+
+	public List<BudgetEntryDTO> findBudgetEntriesForPeriod(LocalDate start, LocalDate end)
+	{
+		List<Entry> entries = repository.findEntriesForPeriod(start, end);
+		return entries.stream().map(BudgetEntryDTO::new).toList();
 	}
 }

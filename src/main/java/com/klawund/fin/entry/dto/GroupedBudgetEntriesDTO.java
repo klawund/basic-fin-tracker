@@ -20,9 +20,9 @@ public class GroupedBudgetEntriesDTO implements Serializable
 
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private String categoryName;
+	private BigDecimal sum;
 
 	@JsonProperty("category")
-	private String categoryName;
 	private Set<BudgetEntryDTO> entries;
-	private BigDecimal sum;
 }

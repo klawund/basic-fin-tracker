@@ -21,8 +21,8 @@ public class BudgetGroupedByCategoryDTO implements BaseBudgetDTO<Set<GroupedBudg
 
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private BigDecimal sum;
 
 	@JsonProperty("groupedEntries")
 	private Set<GroupedBudgetEntriesDTO> entries;
-	private BigDecimal sum;
 }
